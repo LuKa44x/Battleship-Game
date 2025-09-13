@@ -1,0 +1,28 @@
+{
+  "name": "battleship-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "format": "prettier --write .",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuKa44x/Battleship-Game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuKa44x/Battleship-Game/issues"
+  },
+  "homepage": "https://github.com/LuKa44x/Battleship-Game#readme",
+  "devDependencies": {
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.1.3",
+    "prettier": "^3.6.2"
+  }
+}

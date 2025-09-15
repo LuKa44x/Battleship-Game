@@ -27,9 +27,9 @@ describe('Gameboard Module', () => {
     const gameArea = new gameboard();
     const testShip = new ship(3);
     gameArea.placeShip(testShip, 1, 1, 'right');
-    expect(gameArea.board[1][1]).toBe(1);
-    expect(gameArea.board[1][2]).toBe(1);
-    expect(gameArea.board[1][3]).toBe(1);
+    expect(gameArea.board[1][1].value).toBe(1);
+    expect(gameArea.board[1][2].value).toBe(1);
+    expect(gameArea.board[1][3].value).toBe(1);
   });
 });
 test('Receive an attack and record a hit', () => {
@@ -46,5 +46,5 @@ test('Receive an attack and record a hit', () => {
 test('Receive an attack and record a miss', () => {
   const board = new gameboard();
   board.receiveAttack(5, 5);
-  expect(board.board[5][5]).toBe(-1);
+  expect(board.board[5][5].value).toBe(-1);
 });

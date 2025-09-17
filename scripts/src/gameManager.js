@@ -1,6 +1,6 @@
 // 0 = water, 1 = ship, -1 = missed, -2 = hit
 
-export class ship {
+export class Ship {
   constructor(length) {
     this.length = length;
     this.hits = 0;
@@ -19,7 +19,7 @@ export class ship {
   }
 }
 
-export class gameboard {
+export class Gameboard {
   constructor() {
     this.board = this.createGrid();
     this.ships = [];
@@ -79,4 +79,20 @@ export class gameboard {
   gameOver() {
     if (!this.ships.length) console.log('game over'); //function reset board
   }
+}
+
+export class Player {
+  constructor(name, isAI = false) {
+    this.name = name;
+    this.turn = false;
+    this.isAI = isAI;
+    this.gameboard = new Gameboard();
+    this.shots = []; //history of the shots
+  }
+
+  playTurn() {
+    this.turn = true;
+  }
+
+  //no idea for now
 }

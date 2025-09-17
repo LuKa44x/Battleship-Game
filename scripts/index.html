@@ -7,5 +7,35 @@
     <script type="module" src="src/index.js" defer></script>
     <title>Battleship</title>
   </head>
-  <body></body>
+  <body>
+    <h1>Battleship</h1>
+    <div class="turnDisplay-container">
+      <h4>TURN</h4>
+    </div>
+    <div class="game-container">
+      <div class="player1-stats-container"></div>
+      <div class="player1-gameboard-container"></div>
+      <div class="player2-gameboard-container"></div>
+      <div class="player2-stats-container"></div>
+    </div>
+    <div class="ships-container">SHIPS:</div>
+    <div class="inputs-container">
+      <div class="namesInput-container">
+        <input
+          type="text"
+          class="player-name-input"
+          placeholder="Enter Player Name"
+        />
+
+        <input type="checkbox" class="ai-checkbox" />
+        <label for="ai-checkbox">Play Against AI</label>
+      </div>
+      <div class="buttons-container">
+        <button class="start-game-button">Start Game</button>
+        <button class="reset-game-button">Reset Game</button>
+        <button class="randomize-ships-button">Randomize Ships</button>
+        <button class="rotate-ship-button">Rotate Ship</button>
+      </div>
+    </div>
+  </body>
 </html>

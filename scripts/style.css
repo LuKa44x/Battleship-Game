@@ -1,0 +1,91 @@
+:root {
+  --main-bg-color: #292929;
+  --secondary-bg-color: #ffffff;
+  --accent-color: #d6abff;
+  --text-color: #ffffff;
+  --font-family: 'Arial', sans-serif;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game-container {
+  width: 80%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 3fr 1fr;
+}
+
+.player1-gameboard-container {
+  border-right: 4px solid black;
+}
+
+.ships-container {
+  width: 80%;
+  height: 10%;
+  border: 1px solid white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.inputs-container {
+  width: 80%;
+  height: 5%;
+}
+.inputs-container input {
+  width: 50%;
+  height: 50%;
+  padding: 0.2em;
+  border: none;
+  border-radius: 5px;
+}
+.inputs-container input:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--accent-color);
+}
+.inputs-container input::placeholder {
+  color: #7700ff;
+}
+.inputs-container input[type='checkbox'] {
+  box-shadow: 0 0 5px var(--main-bg-color);
+  vertical-align: middle;
+  accent-color: var(--accent-color);
+}
+.inputs-container button {
+  height: 50%;
+  padding: 0 1em;
+  margin-left: 0.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--accent-color);
+  color: var(--main-bg-color);
+  cursor: pointer;
+}
+.inputs-container button:hover {
+  background-color: #fa94fd;
+}
+.inputs-container button:active {
+  background-color: #fa94fd;
+  box-shadow: inset 0 0 5px #7700ff;
+}
+.inputs-container button:disabled {
+  background-color: #999999;
+  cursor: not-allowed;
+}
+
+.namesInput-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}

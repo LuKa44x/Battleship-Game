@@ -6,6 +6,7 @@
   --font-family: 'Arial', sans-serif;
 }
 body {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   background-color: var(--main-bg-color);
@@ -27,9 +28,40 @@ body {
 }
 
 .player1-gameboard-container {
+  height: 100%;
   border-right: 4px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.player2-gameboard-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gameBoard {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  gap: 1px;
+  height: 80%;
+  border: 1px solid white;
+  margin-right: 5px;
+  background-color: white;
+}
+
+.gameBoard > div {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 1px;
+}
+
+.gameBoard > div > div {
+  background-color: var(--main-bg-color);
+  aspect-ratio: 1;
+}
 .ships-container {
   width: 80%;
   height: 10%;

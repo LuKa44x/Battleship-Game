@@ -58,6 +58,10 @@ body {
   gap: 1px;
 }
 
+.no-blur .modal-overlay ~ * {
+  filter: none !important; /* no blur  */
+}
+
 .gameBoard > div > div {
   background-color: var(--main-bg-color);
   aspect-ratio: 1;

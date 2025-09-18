@@ -62,6 +62,64 @@ body {
   background-color: var(--main-bg-color);
   aspect-ratio: 1;
 }
+
+.modal-overlay ~ * {
+  filter: blur(2px);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--main-bg-color);
+  padding: 30px;
+  border-radius: 15px;
+  border: 2px solid var(--accent-color);
+  text-align: center;
+}
+
+.modal-content > input[type='text'] {
+  width: 80%;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  border: none;
+  color: white;
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: rgb(41, 41, 41);
+  border-bottom: 1px solid black;
+}
+.modal-content > input[type='text']:focus {
+  outline: none;
+}
+.modal-content > input[type='text']::placeholder {
+  color: rgb(214, 171, 255);
+}
+
+.ai-option {
+  margin: 10px;
+}
+
+.startGameBtn {
+  padding: 0.5em 1em;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--main-bg-color);
+  color: white;
+  cursor: pointer;
+}
 .ships-container {
   width: 80%;
   height: 10%;
@@ -70,29 +128,6 @@ body {
   grid-template-columns: 1fr 1fr;
 }
 
-.inputs-container {
-  width: 80%;
-  height: 5%;
-}
-.inputs-container input {
-  width: 50%;
-  height: 50%;
-  padding: 0.2em;
-  border: none;
-  border-radius: 5px;
-}
-.inputs-container input:focus {
-  outline: none;
-  box-shadow: 0 0 5px var(--accent-color);
-}
-.inputs-container input::placeholder {
-  color: #7700ff;
-}
-.inputs-container input[type='checkbox'] {
-  box-shadow: 0 0 5px var(--main-bg-color);
-  vertical-align: middle;
-  accent-color: var(--accent-color);
-}
 .inputs-container button {
   height: 50%;
   padding: 0 1em;

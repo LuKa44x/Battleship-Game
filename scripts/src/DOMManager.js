@@ -30,6 +30,8 @@ export function startGame(player1, player2) {
 
   createBoard(document.querySelector('.player1-gameboard-container'));
   createBoard(document.querySelector('.player2-gameboard-container'));
+
+  addPlayerStats(player1, player2);
 }
 
 function removeBlur() {
@@ -53,4 +55,11 @@ export function AICheckboxChecked() {
       player2Input.value = ''; // Svuota quando disabilitato
     }
   });
+}
+function addPlayerStats(player1, player2) {
+  const player1Stats = document.querySelector('.player1-stats-container');
+  const player2Stats = document.querySelector('.player2-stats-container');
+
+  player1Stats.innerHTML = ` <h3>${player1.name}</h3>`;
+  player2Stats.innerHTML = ` <h3>${player2.name}</h3>`;
 }

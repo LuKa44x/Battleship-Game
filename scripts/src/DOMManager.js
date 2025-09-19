@@ -23,7 +23,7 @@ export function startGame(player1, player2) {
     if (!player2Input.value) player2Input.value = 'Player 2';
     player2.name = player2Input.value;
   } else {
-    player2.isAi = true;
+    player2.isAI = true;
     player2.name = 'AI';
   }
   removeBlur();

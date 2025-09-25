@@ -1,7 +1,8 @@
 // 0 = water, 1 = ship, -1 = missed, -2 = hit
 
 export class Ship {
-  constructor(length) {
+  constructor(name, length) {
+    this.name = name;
     this.length = length;
     this.hits = 0;
     this.sunk = false;
@@ -87,6 +88,7 @@ export class Player {
     this.turn = false;
     this.isAI = isAI;
     this.gameboard = new Gameboard();
+    this.ships = [];
     this.shots = []; //history of the shots
   }
 

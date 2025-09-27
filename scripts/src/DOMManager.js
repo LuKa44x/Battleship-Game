@@ -1,4 +1,10 @@
-export function createBoard(playerDiv, player) {
+export function initializeEventListener(player1, player2) {
+  AICheckboxChecked();
+  initializeRotateButton();
+  startGameBtn(player1, player2);
+}
+
+function createBoard(playerDiv, player) {
   const board = document.createElement('div');
   board.classList.add('gameBoard');
   for (let j = 0; j < 10; j++) {
@@ -39,7 +45,15 @@ export function createBoard(playerDiv, player) {
   playerDiv.appendChild(board);
 }
 
-export function startGame(player1, player2) {
+function startGameBtn(player1, player2) {
+  const startGameBtn = document.querySelector('.startGameBtn');
+  startGameBtn.addEventListener('click', () => {
+    startGame(player1, player2);
+    console.log(player1, player2);
+  });
+}
+
+function startGame(player1, player2) {
   const player1Input = document.querySelector('#player1Name');
   if (!player1Input.value) player1Input.value = 'Player 1';
   player1.name = player1Input.value;
@@ -58,7 +72,6 @@ export function startGame(player1, player2) {
   createBoard(document.querySelector('.player1-gameboard-container'), player1);
   createBoard(document.querySelector('.player2-gameboard-container'), player2);
   addPlayerStats(player1, player2);
-  initializeRotateButton();
   createShips(player1);
 }
 
@@ -74,7 +87,7 @@ function AICheckboxControl() {
   else return false;
 }
 //check quando clicco checkbox disable input2, se clicco di nuovo abilita
-export function AICheckboxChecked() {
+function AICheckboxChecked() {
   const checkbox = document.querySelector('.ai-checkbox');
   const player2Input = document.querySelector('#player2Name');
   checkbox.addEventListener('change', (e) => {

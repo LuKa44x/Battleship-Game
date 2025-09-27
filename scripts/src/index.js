@@ -1,1 +1,3 @@
-console.log('working');
+import { game } from './gameController.js';
+
+game();

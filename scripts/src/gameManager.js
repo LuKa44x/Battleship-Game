@@ -82,11 +82,19 @@ export class Player {
     this.gameboard = new Gameboard();
     this.ships = [];
     this.shots = []; //history of the shots
+
+    this.createDefaultShip();
   }
 
   playTurn() {
     this.turn = true;
   }
 
-  //no idea for now
+  createDefaultShip() {
+    this.ships.push(new Ship('Carrier', 5));
+    this.ships.push(new Ship('Battleship', 4));
+    this.ships.push(new Ship('Destroyer', 3));
+    this.ships.push(new Ship('Submarine', 3));
+    this.ships.push(new Ship('Boat', 2));
+  }
 }

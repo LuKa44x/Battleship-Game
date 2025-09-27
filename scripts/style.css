@@ -50,6 +50,7 @@ body {
   border: 1px solid white;
   margin-right: 5px;
   background-color: white;
+  font-size: 9px; /* temp, just for put the ship in gameboard*/
 }
 
 .gameBoard > div {
@@ -167,4 +168,25 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+}
+
+.ship-selected {
+  background-color: var(--accent-color);
+  color: var(--main-bg-color);
+  border: 2px solid white;
+}
+
+.ship-placed {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.ship-preview-valid {
+  background-color: rgba(76, 175, 80, 0.5) !important; /* Verde trasparente */
+  border: 2px solid #4caf50;
+}
+
+.ship-preview-invalid {
+  background-color: rgba(244, 67, 54, 0.5) !important; /* Rosso trasparente */
+  border: 2px solid #f44336;
 }

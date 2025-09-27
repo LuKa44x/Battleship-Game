@@ -9,11 +9,29 @@ export function createBoard(playerDiv, player) {
       cell.dataset.row = j;
       cell.dataset.col = i;
       cell.id = playerDiv.id;
-      cell.addEventListener('click', function () {
-        console.log('Cella cliccata!', this.dataset.row, this.dataset.col);
+      cell.addEventListener('mouseenter', function () {
+        if (selectedShip) {
+          const shipLength = player.ships.find(
+            (ship) => ship.name === selectedShip.textContent
+          ).length;
+          const startRow = parseInt(this.dataset.row, 10);
+          const startCol = parseInt(this.dataset.col, 10);
 
-        gameBoardValidation(cell, player);
+          clearShipPreview(); // Pulisci preview precedenti
+          showShipPreview(startRow, startCol, shipLength, isHorizontal);
+        }
       });
+
+      cell.addEventListener('mouseleave', function () {
+        if (selectedShip) {
+          clearShipPreview();
+        }
+      });
+
+      cell.addEventListener('click', function () {
+        gameBoardValidation(this, player);
+      });
+      resetBoard(cell, player);
       row.appendChild(cell);
     }
     board.appendChild(row);
@@ -85,18 +103,31 @@ function initializeRotateButton() {
   });
 }
 
+function resetBoard(cell, player) {
+  const resetBoardBtn = document.querySelector('.reset-board-button');
+
+  resetBoardBtn.addEventListener('click', () => {
+    // rimuove tutto il contenuto delle celle
+    resetPlacedShip(cell, player);
+  });
+}
+
 function createShips(player) {
   player.ships.forEach((ship) => {
-    const div = document.createElement('div');
-    div.textContent = ship.name;
-    div.classList.add(`${ship.name}`);
-    div.id = player.name;
-    document.querySelector('.ships-container').appendChild(div);
-    div.addEventListener('click', () => {
-      if (selectedShip !== null) selectedShip.classList.remove('ship-selected');
-      selectedShip = div;
-      div.classList.add('ship-selected');
-    });
+    createShip(ship.name, player);
+  });
+}
+
+function createShip(shipName, player) {
+  const div = document.createElement('div');
+  div.textContent = shipName;
+  div.classList.add(`${shipName}`);
+  div.id = player.name;
+  document.querySelector('.ships-container').appendChild(div);
+  div.addEventListener('click', () => {
+    if (selectedShip !== null) selectedShip.classList.remove('ship-selected');
+    selectedShip = div;
+    div.classList.add('ship-selected');
   });
 }
 
@@ -109,68 +140,110 @@ function gameBoardValidation(cell, player) {
   const shipLength = player.ships.find(
     (ship) => ship.name === selectedShip.textContent
   ).length;
-
   const startRow = parseInt(cell.dataset.row, 10);
   const startCol = parseInt(cell.dataset.col, 10);
 
-  if (isHorizontal) {
-    // Bound check
-    if (startCol + shipLength > 10) {
-      alert('Ship cannot be placed here, out of bounds!');
-      return;
-    }
+  const positions = getShipPositions(
+    startRow,
+    startCol,
+    shipLength,
+    isHorizontal
+  );
 
-    // Collision check
-    for (let i = 0; i < shipLength; i++) {
-      const targetCell = document.querySelector(
-        `[data-row="${startRow}"][data-col="${startCol + i}"]`
-      );
-      if (targetCell.textContent) {
-        alert('Ship cannot be placed here, cells are already occupied!');
-        return;
-      }
-    }
+  if (!canPlaceShip(positions)) {
+    alert('Ship cannot be placed here!');
+    return;
+  }
 
-    // Place ship
-    for (let i = 0; i < shipLength; i++) {
-      const targetCell = document.querySelector(
-        `[data-row="${startRow}"][data-col="${startCol + i}"]`
-      );
-      targetCell.textContent = selectedShip.textContent;
-      targetCell.classList.add('ship-placed');
-      if (i === shipLength - 1) {
-        selectedShip.remove();
-        selectedShip = null;
-      }
-    }
-  } else {
-    // Bound check
-    if (startRow + shipLength > 10) {
-      alert('Ship cannot be placed here, out of bounds!');
-      return;
-    }
+  // Piazza la nave
+  clearShipPreview(); // Rimuovi preview
+  positions.forEach((pos) => {
+    const targetCell = document.querySelector(
+      `[data-row="${pos.row}"][data-col="${pos.col}"]`
+    );
+    targetCell.textContent = selectedShip.textContent;
+    targetCell.classList.add('ship-placed');
+  });
 
-    // Collision check
-    for (let i = 0; i < shipLength; i++) {
-      const targetCell = document.querySelector(
-        `[data-row="${startRow + i}"][data-col="${startCol}"]`
+  selectedShip.remove();
+  selectedShip = null;
+}
+
+// Mostra preview della nave
+function showShipPreview(startRow, startCol, shipLength, isHorizontal) {
+  const positions = getShipPositions(
+    startRow,
+    startCol,
+    shipLength,
+    isHorizontal
+  );
+  const canPlace = canPlaceShip(positions);
+
+  positions.forEach((pos) => {
+    const cell = document.querySelector(
+      `[data-row="${pos.row}"][data-col="${pos.col}"]`
+    );
+    if (cell) {
+      cell.classList.add(
+        canPlace ? 'ship-preview-valid' : 'ship-preview-invalid'
       );
-      if (targetCell.textContent) {
-        alert('Ship cannot be placed here, cells are already occupied!');
-        return;
-      }
     }
-    // Place ship
-    for (let i = 0; i < shipLength; i++) {
-      const targetCell = document.querySelector(
-        `[data-col="${startCol}"][data-row="${startRow + i}"]`
-      );
-      targetCell.textContent = selectedShip.textContent;
-      targetCell.classList.add('ship-placed');
-      if (i === shipLength - 1) {
-        selectedShip.remove();
-        selectedShip = null;
-      }
+  });
+}
+
+// Rimuovi preview
+function clearShipPreview() {
+  document
+    .querySelectorAll('.ship-preview-valid, .ship-preview-invalid')
+    .forEach((cell) => {
+      cell.classList.remove('ship-preview-valid', 'ship-preview-invalid');
+    });
+}
+// Funzione per ottenere le posizioni della nave
+function getShipPositions(startRow, startCol, shipLength, isHorizontal) {
+  const positions = [];
+
+  for (let i = 0; i < shipLength; i++) {
+    if (isHorizontal) {
+      positions.push({ row: startRow, col: startCol + i });
+    } else {
+      positions.push({ row: startRow + i, col: startCol });
     }
   }
+
+  return positions;
+}
+
+// Funzione per validare il piazzamento
+function canPlaceShip(positions) {
+  return positions.every((pos) => {
+    // Controllo bounds
+    if (pos.row < 0 || pos.row > 9 || pos.col < 0 || pos.col > 9) {
+      return false;
+    }
+
+    // Controllo collisione
+    const cell = document.querySelector(
+      `[data-row="${pos.row}"][data-col="${pos.col}"]`
+    );
+    return cell && !cell.textContent;
+  });
+}
+
+function resetPlacedShip(cell, player) {
+  const shipName = cell.textContent;
+
+  // se non c'è niente nella cella, esci
+  if (!shipName) return;
+
+  // ricrea la nave nella lista
+  createShip(shipName, player);
+
+  // rimuovi la nave da tutte le celle che la contengono
+  document.querySelectorAll('.ship-placed').forEach((c) => {
+    if (c.textContent === shipName) {
+      c.textContent = '';
+      c.classList.remove('ship-placed');
+    }
+  });
 }

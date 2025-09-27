@@ -42,20 +42,12 @@ export class Gameboard {
     this.ships.push(ship);
     for (let i = 0; i < ship.length; i++) {
       switch (orientation) {
-        case 'right':
+        case 'horizontal':
           this.board[y][x + i] = { value: 1, piece: ship, shipIndex: i }; //added 3 values to the placed ship square in the board
           break;
 
-        case 'down':
+        case 'vertical':
           this.board[y + i][x] = { value: 1, piece: ship, shipIndex: i }; //value 1 = ship
-          break;
-
-        case 'left':
-          this.board[y][x - i] = { value: 1, piece: ship, shipIndex: i }; //piece = ship object reference (plan is to get which ship was hit)(maybe change to ship name or id)
-          break;
-
-        case 'up':
-          this.board[y - i][x] = { value: 1, piece: ship, shipIndex: i }; //shipIndex = which part of the ship was hit (maybe useful)
           break;
       }
     }

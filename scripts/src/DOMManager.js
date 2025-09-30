@@ -1,6 +1,9 @@
+import { game } from './gameController.js';
+
 export function initializeEventListener(player1, player2) {
   AICheckboxChecked();
   initializeRotateButton();
+  initializeFinishRoundButton(player1, player2);
   startGameBtn(player1, player2);
 }
 
@@ -72,6 +75,7 @@ function startGame(player1, player2) {
   createBoard(document.querySelector('.player1-gameboard-container'), player1);
   createBoard(document.querySelector('.player2-gameboard-container'), player2);
   addPlayerStats(player1, player2);
+  switchTurnDisplay();
   createShips(player1);
 }
 
@@ -116,6 +120,48 @@ function initializeRotateButton() {
   });
 }
 
+function switchTurnDisplay() {
+  const turnDisplay = document.querySelector('.turnDisplay-container > h4');
+  turnDisplay.textContent = `${game.turn.name}'s Turn`;
+}
+
+function initializeFinishRoundButton(player1, player2) {
+  const finishRoundButton = document.querySelector('.finish-round-button');
+  finishRoundButton.addEventListener('click', () => {
+    if (game.phase === 'placement' && game.turn === player1) {
+      document
+        .querySelectorAll('.gameBoard > div > div#Player\\ 1')
+        .forEach((div) => {
+          //push nell array della board
+          div.textContent = '';
+          div.classList = '';
+        });
+      alert('Round Finished! Switching turns.');
+      game.switchTurn(player1, player2);
+      switchTurnDisplay();
+      createShips(player2); //future check
+      return;
+    }
+    if (game.phase === 'placement' && game.turn === player2) {
+      document
+        .querySelectorAll('.gameBoard > div > div#Player\\ 2')
+        .forEach((div) => {
+          //push nell array della board
+          div.textContent = '';
+          div.classList = '';
+        });
+      alert('Round Finished! Switching turns.');
+      game.switchTurn(player1, player2);
+      switchTurnDisplay();
+      game.battle();
+      return;
+    }
+    alert('Round Finished! Switching turns.');
+    game.switchTurn(player1, player2);
+    //creare di nuovo le ship nel div + dare abilita al player due di eseguire
+  });
+}
+
 function resetBoard(cell, player) {
   const resetBoardBtn = document.querySelector('.reset-board-button');
 
@@ -126,6 +172,8 @@ function resetBoard(cell, player) {
 }
 
 function createShips(player) {
+  const shipsContainer = document.querySelector('.ships-container');
+  shipsContainer.textContent = '';
   player.ships.forEach((ship) => {
     createShip(ship.name, player);
   });

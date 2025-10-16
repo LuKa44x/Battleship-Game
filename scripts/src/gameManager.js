@@ -38,19 +38,10 @@ export class Gameboard {
           )
       );
   }
-  placeShip(ship, x, y, orientation) {
+  placeShip(x, y, ship) {
     this.ships.push(ship);
-    for (let i = 0; i < ship.length; i++) {
-      switch (orientation) {
-        case 'horizontal':
-          this.board[y][x + i] = { value: 1, piece: ship, shipIndex: i }; //added 3 values to the placed ship square in the board
-          break;
 
-        case 'vertical':
-          this.board[y + i][x] = { value: 1, piece: ship, shipIndex: i }; //value 1 = ship
-          break;
-      }
-    }
+    this.board[x][y] = { value: 1, piece: ship }; //idea momentanea attraverso il nome prendo le ship in ships del player e vedo se li hits coincide con length e poi affondera
   }
 
   receiveAttack(x, y, ship) {
@@ -88,6 +79,10 @@ export class Player {
 
   playTurn() {
     this.turn = true;
+  }
+
+  placeShip(x, y, ship, orientation) {
+    this.gameboard.placeShip(x, y, ship, orientation);
   }
 
   createDefaultShip() {

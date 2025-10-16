@@ -39,9 +39,6 @@ export default defineConfig([
       'no-var': 'error', // vieta var, usa let/const
       semi: ['error', 'always'], // obbliga il ; alla fine di ogni riga
       quotes: ['error', 'single'], // forza le singole virgolette
-      indent: ['error', 2], // indentazione di 2 spazi
-      'no-mixed-spaces-and-tabs': 'error', // non mischiare spazi e tab
-      'comma-dangle': ['error', 'always-multiline'], // virgola finale negli oggetti/array multilinea
     },
   },
 ]);

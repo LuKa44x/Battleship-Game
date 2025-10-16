@@ -1,5 +1,5 @@
 import { game } from './gameController.js';
-
+//in qualche modo controllando game.turn devo dare la classe place invalid alla board corretta
 export function initializeEventListener(player1, player2) {
   AICheckboxChecked();
   initializeRotateButton();
@@ -15,8 +15,8 @@ function createBoard(playerDiv, player) {
 
     for (let i = 0; i < 10; i++) {
       const cell = document.createElement('div');
-      cell.dataset.row = j;
-      cell.dataset.col = i;
+      cell.dataset.row = j + 1;
+      cell.dataset.col = i + 1;
       cell.id = playerDiv.id;
       cell.addEventListener('mouseenter', function () {
         if (selectedShip) {
@@ -27,7 +27,7 @@ function createBoard(playerDiv, player) {
           const startCol = parseInt(this.dataset.col, 10);
 
           clearShipPreview(); // Pulisci preview precedenti
-          showShipPreview(startRow, startCol, shipLength, isHorizontal);
+          showShipPreview(startRow, startCol, shipLength, isHorizontal, board);
         }
       });
 
@@ -129,11 +129,16 @@ function initializeFinishRoundButton(player1, player2) {
   const finishRoundButton = document.querySelector('.finish-round-button');
   finishRoundButton.addEventListener('click', () => {
     if (game.phase === 'placement' && game.turn === player1) {
-      document
-        .querySelectorAll('.gameBoard > div > div#Player\\ 1')
+      [...document.querySelectorAll('.gameBoard > div > div#Player\\ 1')]
+        .filter((div) => div.textContent.trim() !== '')
         .forEach((div) => {
           //push nell array della board
-          div.textContent = '';
+          game.player1.placeShip(
+            div.dataset.row,
+            div.dataset.col,
+            div.textContent
+          );
+          div.textContent = ''; //clean the board
           div.classList = '';
         });
       alert('Round Finished! Switching turns.');
@@ -143,10 +148,15 @@ function initializeFinishRoundButton(player1, player2) {
       return;
     }
     if (game.phase === 'placement' && game.turn === player2) {
-      document
-        .querySelectorAll('.gameBoard > div > div#Player\\ 2')
+      [...document.querySelectorAll('.gameBoard > div > div#Player\\ 2')]
+        .filter((div) => div.textContent.trim() !== '')
         .forEach((div) => {
           //push nell array della board
+          game.player2.placeShip(
+            div.dataset.row,
+            div.dataset.col,
+            div.textContent
+          );
           div.textContent = '';
           div.classList = '';
         });
@@ -197,7 +207,7 @@ function gameBoardValidation(cell, player) {
     alert('No ship selected! Please select a ship before placing it.');
     return;
   }
-
+  const board = cell.closest('.gameBoard'); //risale ai genitori fino a quando matcha il selector
   const shipLength = player.ships.find(
     (ship) => ship.name === selectedShip.textContent
   ).length;
@@ -211,7 +221,7 @@ function gameBoardValidation(cell, player) {
     isHorizontal
   );
 
-  if (!canPlaceShip(positions)) {
+  if (!canPlaceShip(positions, board)) {
     alert('Ship cannot be placed here!');
     return;
   }
@@ -219,7 +229,7 @@ function gameBoardValidation(cell, player) {
   // Piazza la nave
   clearShipPreview(); // Rimuovi preview
   positions.forEach((pos) => {
-    const targetCell = document.querySelector(
+    const targetCell = board.querySelector(
       `[data-row="${pos.row}"][data-col="${pos.col}"]`
     );
     targetCell.textContent = selectedShip.textContent;
@@ -231,17 +241,17 @@ function gameBoardValidation(cell, player) {
 }
 
 // Mostra preview della nave
-function showShipPreview(startRow, startCol, shipLength, isHorizontal) {
+function showShipPreview(startRow, startCol, shipLength, isHorizontal, board) {
   const positions = getShipPositions(
     startRow,
     startCol,
     shipLength,
     isHorizontal
   );
-  const canPlace = canPlaceShip(positions);
+  const canPlace = canPlaceShip(positions, board);
 
   positions.forEach((pos) => {
-    const cell = document.querySelector(
+    const cell = board.querySelector(
       `[data-row="${pos.row}"][data-col="${pos.col}"]`
     );
     if (cell) {
@@ -276,15 +286,15 @@ function getShipPositions(startRow, startCol, shipLength, isHorizontal) {
 }
 
 // Funzione per validare il piazzamento
-function canPlaceShip(positions) {
+function canPlaceShip(positions, board) {
   return positions.every((pos) => {
     // Controllo bounds
-    if (pos.row < 0 || pos.row > 9 || pos.col < 0 || pos.col > 9) {
+    if (pos.row < 1 || pos.row > 10 || pos.col < 1 || pos.col > 10) {
       return false;
     }
 
     // Controllo collisione
-    const cell = document.querySelector(
+    const cell = board.querySelector(
       `[data-row="${pos.row}"][data-col="${pos.col}"]`
     );
     return cell && !cell.textContent;
